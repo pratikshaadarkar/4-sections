@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DPACO — Segmented Landing Pages</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  { 950:'#000F1C', 900:'#001A2E', 800:'#002B49', 700:'#003D6B', 600:'#0A4F80' },
+            earth: { 50:'#FAF7F2', 100:'#F5F1EB', 200:'#E8DDD0', 300:'#D4B896', 400:'#C4A35A', 500:'#A67C3A', 600:'#8B6914', 700:'#6B4C2A', 800:'#4A3018' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #F5F1EB; }
+    .serif { font-family: 'EB Garamond', Georgia, serif; }
+    .grid-bg {
+      background-image:
+        repeating-linear-gradient(0deg,  rgba(196,163,90,.05), rgba(196,163,90,.05) 1px, transparent 1px, transparent 56px),
+        repeating-linear-gradient(90deg, rgba(196,163,90,.05), rgba(196,163,90,.05) 1px, transparent 1px, transparent 56px);
+    }
+    .tab-active  { background: #C4A35A; color: #001A2E; }
+    .tab-passive { background: transparent; color: rgba(212,184,150,.7); border: 1px solid rgba(196,163,90,.25); }
+    .tab-passive:hover { border-color: rgba(196,163,90,.6); color: #C4A35A; }
+    .fade-in { animation: fi .35s ease; }
+    @keyframes fi { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    .stage-node { transition: border-color .2s, background .2s; }
+    .stage-node:hover { border-color: #C4A35A; background: rgba(196,163,90,.08); }
+    .proof-row td { padding: .55rem .75rem; font-size: .8rem; border-bottom: 1px solid rgba(107,76,42,.15); }
+    .proof-row tr:last-child td { border-bottom: none; }
+    .proof-row th { padding: .55rem .75rem; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; background: #002B49; color: #C4A35A; }
+    .service-card:hover { border-color: #002B49; }
+    .scrollbar-hide::-webkit-scrollbar { display:none; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+/* ─── DATA ──────────────────────────────────────────────────────────────── */
+
+const AUDIENCES = [
+  { id:'bureaucrats',   short:'Government Officers',  label:'IAS / IPS · Chief Engineers · Commissioners' },
+  { id:'political',     short:'Political Leaders',     label:'Ministers · MLAs · APMC Chairmen' },
+  { id:'developers',    short:'Developers & Investors',label:'Real Estate · Infrastructure · Commercial' },
+  { id:'housing',       short:'Housing Societies',     label:'Redevelopment Committees · Co-operatives' },
+];
+
+const PAGES = {
+
+  /* ─── PAGE 1 ─────────────────────────────────────────────── */
+  bureaucrats: {
+    hero: {
+      headline:   'File Moves. Project Delivers. Audit Holds.',
+      sub:        '45 Years of Maharashtra\'s Departmental Architecture, Translated Into Audit-Ready Documentation From Day One.',
+      body:       'Every infrastructure project a government officer champions carries the officer\'s professional credibility alongside it. DPACO structures the documentation, policy compliance, and multi-department coordination from the first file movement through to final commissioning — so that when the audit committee convenes, every answer exists in writing, in the format Maharashtra\'s regulatory bodies require.',
+    },
+    pivot: {
+      hook:  '"File rukegi toh nahi?"',
+      intro: 'This question surfaces in every infrastructure project before a PMC firm is selected — because when a project stalls, the accountability does not remain with the PMC firm. It returns to the officer who recommended them.',
+      points:[
+        'The DPR fails bank or audit scrutiny',
+        'Multi-department coordination breaks down between PWD, Jalsampada, or UDD',
+        'The PPP or BOT framework was structured by a firm that understood design but lacked policy depth',
+        'External interference finds a gap in the project\'s institutional architecture',
+      ],
+      posture:'Files remain in motion because the documentation was built for motion — audit-ready, policy-compliant, and multi-department aligned from the point of origination.',
+    },
+    stages:[
+      { num:'01', title:'Concept',   sub:'Policy Structuring Before the Tender Exists',       body:'DPACO enters infrastructure conversations at the concept stage — before the DPR is written, before the tender is published. The project concept is stress-tested for policy compliance, financial viability, and multi-department feasibility from the first internal discussion. By the time competitors arrive, the framework is already embedded.' },
+      { num:'02', title:'Structure', sub:'Bankable Documentation and PPP/BOT Framework',      body:'DPACO produces DPRs, feasibility studies, PPP frameworks, and BOT structures in formats that pass both government audit requirements and bank lending criteria simultaneously. The Shetkari Bhavan documentation enabled public funding to flow to APMCs for the first time in state history.' },
+      { num:'03', title:'Approval',  sub:'Multi-Department Coordination Across 9–15 Bodies',  body:'Large infrastructure projects cross multiple departments. DPACO holds active working empanelments across 9–15 Maharashtra government departments — coordinating from a position of existing institutional trust. Approval movement is faster when the coordinating firm already has an established relationship with every relevant department.' },
+      { num:'04', title:'Execution', sub:'Turnkey PMC With Ground Presence Across Maharashtra',body:'DPACO deploys PMC across the full project lifecycle — from the first site inspection to the commissioning certificate. Regional teams are positioned across Maharashtra\'s districts, talukas, and rural municipalities. Mumbai-based firms coordinate Maharashtra projects by phone. DPACO is on site.' },
+    ],
+    services:[
+      { title:'Policy Origination and BOT/PPP Framework Design',     body:'DPACO structures policy frameworks that become government schemes, then serves as PMC for the resulting projects. MSRTC bus stand BOT models and Jilha Parishad schemes were DPACO proposals before they became government policy.' },
+      { title:'Audit-Ready DPR Production',                           body:'Detailed Project Reports produced to the dual standard of Maharashtra government audit compliance and bank lending criteria. Every DPR is structured so it can be placed before an audit committee at any stage.' },
+      { title:'Multi-Department Coordination Management',             body:'Active empanelment relationships across PWD, Jalsampada, APMC, Transport, NHM, Skill Development, UDD, Jilha Parishad, and Municipal Council. DPACO manages inter-department coordination as an institutional relationship.' },
+      { title:'PPP and BOT Structuring',                              body:'DPACO is among the 10–20 active PPP consultants in all of Maharashtra, and among the group that originated the frameworks currently in use. Officers requiring PPP or BOT project structure engage the team with the most documented origination experience in the state.' },
+      { title:'Project Interference Navigation',                      body:'Three generations of Maharashtra government infrastructure practice means DPACO has experienced every form of external interference — contractor pressure, political re-alignment, budget freeze, and departmental turf conflict.' },
+      { title:'Empanelment-Based Credential Verification',            body:'DPACO\'s government empanelments are formal, documentable credentials. Officers selecting DPACO can produce those empanelment records to any audit committee or departmental superior as evidence of due-diligence in PMC selection.' },
+    ],
+    projects:[
+      { name:'Shetkari Bhavan',       type:'Maharashtra APMC Infrastructure Scheme',        rows:[['Project Type','Government Infrastructure Scheme — Farmer Welfare'],['Scale','17 APMC locations across Maharashtra'],['DPACO Role','Policy Origination + Scheme Design + Full PMC'],['Milestone','First instance of Maharashtra government directing funds TO APMCs'],['Status','Active — 17 commissions under execution']], verify:'Maharashtra APMC Dept records · Shetkari Bhavan scheme adoption file · DPACO project register' },
+      { name:'MSRTC Bus Stand',       type:'BOT Framework Origination',                     rows:[['Project Type','Transport Infrastructure — Build-Operate-Transfer'],['DPACO Role','BOT Policy Framework Design + PPP Structuring'],['Milestone','DPACO structured the BOT model before it existed as formal government policy'],['Documentation','Original BOT framework document, MSRTC engagement records']], verify:'MSRTC project records · Maharashtra Transport Dept · DPACO policy origination register' },
+      { name:'Udgir Commercial Complex', type:'600-Shop Regional Infrastructure',           rows:[['Project Type','Commercial Infrastructure — Municipal Scale'],['Location','Udgir, Latur District, Maharashtra'],['Scale','600-shop commercial complex'],['DPACO Role','Full PMC — Concept to Commissioning'],['Status','Commissioned — operational regional landmark']], verify:'Udgir Municipal Council records · Latur district project documentation · DPACO PMC register' },
+    ],
+    cta:{ action:'Request DPACO\'s Government Empanelment Credential Document', note:'Suitable for submission to technical review committees and departmental superiors as evidence of due-diligence in PMC selection.' },
+  },
+
+  /* ─── PAGE 2 ─────────────────────────────────────────────── */
+  political: {
+    hero:{
+      headline:'Policy to Commission. Concept to Constituency Asset.',
+      sub:     'DPACO Converts Infrastructure Decisions Into Visible, Commissioned Public Landmarks — Within the Timeline That Political Visibility Requires.',
+      body:    'Policy wins are invisible. Infrastructure is tangible. The foundation stone placed, the market complex inaugurated, the civic hall a constituency associates with a specific leader\'s tenure — these translate political decisions into lasting public recognition. DPACO structures the journey from scheme concept to commissioned standing infrastructure asset, with the speed, documentation, and government coordination that makes the outcome both real and attributable.',
+    },
+    pivot:{
+      hook:  'The Visibility Gap: When Policy Exists But Infrastructure Stalls',
+      intro: 'A scheme approved at the ministerial level can remain invisible to the public for years — because the distance between policy adoption and commissioned infrastructure is where execution complexity lives. The accountability for a stalled visible project falls on the leader who championed it.',
+      points:[
+        'Consultants promise delivery but arrive after the policy framework is set',
+        'External firms work from outside government departments and deliver reports rather than results',
+        'Approval timelines extend without constituency-visible progress',
+        'The leader who championed a stalled project carries its visibility cost',
+      ],
+      posture:'DPACO converts the distance between policy adoption and public visibility into a structured, managed, time-defined execution sequence.',
+    },
+    stages:[
+      { num:'01', title:'Concept',   sub:'Scheme Design and Political Impact Mapping',        body:'DPACO enters at the scheme conceptualisation stage — before the proposal goes to government. The institution maps political impact: scale, public reach, visibility timeline, and attribution architecture that ensures the sponsoring leader is associated with the outcome. The Shetkari Bhavan concept was structured here — DPACO proposed it to the minister, government adopted it, it now operates across 17 APMCs.' },
+      { num:'02', title:'Structure', sub:'Policy Framework and Scheme Adoption',              body:'DPACO structures the policy and financial frameworks that convert a concept into an adoptable government scheme — PPP structure, BOT model, funding flow design, and departmental approval pathway. When a minister or MLA backs a DPACO-structured scheme, they back something already tested against Maharashtra\'s approval architecture.' },
+      { num:'03', title:'Approval',  sub:'Government Interface and Department Coordination',  body:'DPACO holds active working relationships across 9–15 Maharashtra government departments. The approval pathway is mapped before submission and DPACO manages department coordination from the inside — reducing bureaucratic friction that stalls visible projects.' },
+      { num:'04', title:'Execution', sub:'Commissioned Asset — Visible, Attributable, Operational', body:'DPACO manages construction oversight, PMC, and commissioning through to final operational handover. The outcome is a standing infrastructure asset — a market complex, civic facility, transport hub — commissioned on a timeline that supports the political visibility objective. Ground teams are positioned across Maharashtra\'s districts. Timelines hold because the firm managing execution is present on site.' },
+    ],
+    services:[
+      { title:'Scheme Conceptualisation and Government Adoption',     body:'DPACO structures scheme proposals that are adoptable by government — financially viable, policy-compliant, and politically attributable. The Shetkari Bhavan model is the reference: concept to government adoption to active commissioning across 17 APMCs.' },
+      { title:'PPP and BOT Framework Design',                         body:'DPACO creates PPP and BOT policy frameworks that convert a scheme concept into a government-fundable infrastructure programme. These frameworks have been adopted by MSRTC, Jilha Parishad, and the Maharashtra APMC network.' },
+      { title:'Civic Infrastructure PMC — Municipal to Regional Scale',body:'Full PMC from site assessment to commissioning for civic, commercial, and agricultural infrastructure. The Udgir 600-shop complex represents regional landmark scale. Smaller municipal infrastructure is equally within scope.' },
+      { title:'Multi-Department Approval Management',                 body:'Active empanelments across 9–15 departments allow DPACO to coordinate approvals across PWD, Urban Development, APMC, Transport, and Municipal bodies simultaneously — reducing inter-department delay that stalls visible projects.' },
+      { title:'Commissioning Documentation and Public Attribution',    body:'DPACO produces project completion documentation, commissioning records, and public-facing project records that establish the institutional history of an infrastructure asset — including the leadership decisions that enabled it.' },
+      { title:'Regional Ground Presence — All Maharashtra Districts',  body:'DPACO deploys site teams across Maharashtra\'s districts and talukas. Infrastructure in Latur, Osmanabad, Nashik, or rural APMC jurisdictions receives the same PMC oversight as a Mumbai municipal project.' },
+    ],
+    projects:[
+      { name:'Shetkari Bhavan',          type:'17 APMC Farmer Welfare Facilities, Maharashtra',  rows:[['Project Type','Government Scheme — Agricultural Market Infrastructure'],['Scale','17 APMC locations statewide'],['DPACO Role','Scheme Origination + Policy Proposal + Full PMC'],['Political Milestone','First Maharashtra scheme directing funds to APMCs — proposed to Minister Abdul Sattar'],['Visible Outcome','17 commissioned farmer welfare facilities'],['Status','Active — operational across all sites']], verify:'Maharashtra APMC Department · Minister of Agriculture records · DPACO scheme origination register' },
+      { name:'Udgir Commercial Complex', type:'600-Shop Regional Landmark',                       rows:[['Project Type','Civic Commercial Infrastructure'],['Location','Udgir, Latur District'],['Scale','600-shop commercial complex'],['DPACO Role','Full PMC — Policy to Commissioning'],['Visible Outcome','Commissioned, operational regional commercial landmark'],['Status','Operational']], verify:'Udgir Municipal Council · Latur district infrastructure records · DPACO PMC register' },
+      { name:'MSRTC Bus Stand',          type:'BOT Framework, Maharashtra Transport Network',     rows:[['Project Type','Transport Infrastructure — Build-Operate-Transfer'],['DPACO Role','BOT Policy Origination + PPP Framework Design'],['Political Milestone','DPACO structured the policy model before it existed as government directive — enabling the MSRTC programme']], verify:'MSRTC project records · Maharashtra Transport Department · DPACO policy origination file' },
+    ],
+    cta:{ action:'Explore DPACO\'s Scheme-to-Commissioning Execution Model', note:'Discuss a constituency infrastructure concept, a scheme framework, or an active project requiring PMC coordination.' },
+  },
+
+  /* ─── PAGE 3 ─────────────────────────────────────────────── */
+  developers: {
+    hero:{
+      headline:'Your Project Is Viable. DPACO Makes It Bankable.',
+      sub:     'From Concept to Financial Closure — Structured for Lender Approval, Government Sanction, and Capital Protection Throughout.',
+      body:    'A viable project concept and a bankable project are two different assets. Banks fund documentation — feasibility studies, DPRs, financial models, and approval pathways structured to their lending criteria. The gap between a developer\'s viable concept and a funded, approved, executable project is precisely where DPACO structures the most value. Every engagement is structured to protect the developer\'s capital, reduce execution risk, and produce the documentation that bank lenders and institutional funders act on.',
+    },
+    pivot:{
+      hook:  'Personal Capital at Risk — The Developer\'s Accountability',
+      intro: 'At ₹100–200 crore project scale, the developer carries the full risk exposure of a PMC firm that overpromises, underdocuments, or disappears when government interface becomes complex.',
+      points:[
+        'Firms pitch confidently, sign agreements, deliver partial scope',
+        'Approval timelines are missed; DPRs are declined by bank credit committees',
+        'The developer absorbs carrying cost, opportunity cost, and capital exposure',
+        'No single accountable party exists across the full lifecycle',
+      ],
+      posture:'DPACO structures the financial and government interface layers that convert a developer\'s viable concept into a funded, approved, and executable project — with the developer\'s capital protected at every stage.',
+    },
+    stages:[
+      { num:'01', title:'Concept',   sub:'Viability Assessment and Capital Exposure Mapping',    body:'DPACO evaluates the project concept against three simultaneous criteria: technical viability, financial bankability, and government approval pathway. Concepts with structural gaps are identified here — before capital is committed to a flawed foundation. DPACO enters with contractor perspective, developer awareness, and government approval experience simultaneously.' },
+      { num:'02', title:'Structure', sub:'Bankable DPR, Financial Modelling, and Government Framework', body:'DPACO produces the documentation package that lenders act on: feasibility study, DPR, financial model, PPP or approval framework, and ROI projection structured on realistic assumptions. Every document is produced to dual standard: government audit compliance and bank lending criteria — structured so it can be placed before a bank credit committee and a government audit panel on the same day.' },
+      { num:'03', title:'Approval',  sub:'Government Interface — NOC, PPP, Land, and Statutory Approvals', body:'Private developers requiring government land, NOCs, PPP structures, or complex statutory approvals access DPACO\'s 40+ years of active department relationships. Approval timelines shorten when the managing firm has an existing institutional relationship with the relevant department rather than approaching from outside.' },
+      { num:'04', title:'Execution', sub:'Turnkey PMC — Weekly Reporting, Budget Control, On-Site Presence', body:'DPACO manages construction oversight, contractor accountability, quality compliance, and timeline control through to commissioning. Weekly site reports, monthly progress reports with budget-versus-actual analysis, and real-time escalation protocols are standard across all private developer engagements. The developer\'s capital is protected through active on-site PMC oversight that prevents the delay accumulation and cost escalation that erodes ROI.' },
+    ],
+    services:[
+      { title:'Bankable DPR Production',                               body:'DPRs structured to the specific documentation requirements of Maharashtra\'s bank lenders and institutional funders. DPACO produces DPRs that pass bank credit committee review — because the documentation standard is set at that requirement, not at general PMC convention.' },
+      { title:'Feasibility Study and Financial Modelling',             body:'Project viability assessment and financial model production with realistic ROI projections, timeline-adjusted carrying cost analysis, and exit strategy framing. Developers receive a financial model they can present to institutional funders with confidence.' },
+      { title:'Government Interface — NOC, PPP, and Statutory Approvals', body:'DPACO manages the full government approval interface for private developer projects: land-related NOCs, PPP framework design where applicable, statutory approval coordination across Municipal, Urban Development, and sector-specific bodies.' },
+      { title:'Construction PMC — Contractor Oversight, Quality Control, Timeline Management', body:'Full PMC scope from construction commencement to commissioning certificate. Weekly site reports with milestone tracking, monthly progress reports with budget-versus-actual analysis, and photographic site documentation throughout.' },
+      { title:'Multi-Department Coordination for Complex Projects',     body:'Commercial projects involving transport access, utility coordination, APMC proximity, or government land adjacency require multi-department engagement. DPACO coordinates these simultaneously from a position of active empanelment.' },
+      { title:'Capital Protection Structure — Scope Clarity and Escalation Protocols', body:'DPACO defines scope of work explicitly at engagement commencement — deliverables, stage-wise responsibility, and decision checkpoints. Cost escalation is flagged at the earliest detection point through the monthly reporting framework.' },
+    ],
+    projects:[
+      { name:'Shetkari Bhavan',          type:'Documentation Standard Reference',              rows:[['Relevance to Developers','Documentation produced to a standard that enabled a new category of government funding'],['DPACO Role','Policy Origination + Full DPR + Scheme Documentation'],['Outcome','Government adopted the scheme; 17 APMC sites funded and commissioned'],['Documentation Standard','Passed both government scheme adoption criteria and ongoing audit review across all 17 sites']], verify:'Maharashtra APMC records · DPACO DPR documentation register' },
+      { name:'Udgir Commercial Complex', type:'₹Commercial Scale PMC Reference',               rows:[['Project Type','Commercial Infrastructure — 600 Shops'],['Location','Udgir, Latur District'],['DPACO Role','Full PMC — Concept to Commissioning'],['Outcome','Commissioned, operational commercial complex — standing regional reference'],['Relevance','Large-scale commercial PMC with government interface — comparable reference for commercial developer projects']], verify:'Udgir Municipal Council · DPACO PMC engagement record' },
+      { name:'MSRTC BOT',               type:'Financial and Government Interface Model',        rows:[['Project Type','Transport Infrastructure BOT'],['DPACO Role','BOT Framework Origination + Financial Structure + PPP Design'],['Relevance','Proof of DPACO\'s ability to structure the financial and government interface layers that convert a concept into a funded, approved project']], verify:'MSRTC records · Maharashtra Transport Department · DPACO BOT framework register' },
+    ],
+    cta:{ action:'Request a Preliminary Viability-to-Bankability Assessment', note:'Present your project concept for a structured preliminary review — viability assessment, government approval pathway mapping, and DPR scope definition.' },
+  },
+
+  /* ─── PAGE 4 ─────────────────────────────────────────────── */
+  housing: {
+    hero:{
+      headline:'Structural Safety. Legal Compliance. Member Certainty.',
+      sub:     'DPACO Guides Society Redevelopment With VJTI-Empaneled Structural Assessment, 45 Years of Municipal Planning Experience, and End-to-End UDCPR Compliance.',
+      body:    'Society redevelopment is among the most consequential decisions a co-operative committee makes on behalf of its members. Structural safety assessments, UDCPR compliance, municipal approvals, and developer interface each carry legal and financial consequences that extend well beyond the project timeline. DPACO structures the full redevelopment engagement — from VJTI-empaneled structural assessment to occupation certificate — with every member\'s interest as the compliance baseline.',
+    },
+    pivot:{
+      hook:  'The Society Redevelopment Risk Matrix — Where Members Carry the Exposure',
+      intro: 'Society redevelopment complexity is genuine. The decisions made at the committee level become binding on every member — and members who trusted the committee\'s choice of consultant carry the consequences for years.',
+      points:[
+        'Structural assessments without institutional empanelment — reports municipal authorities decline to accept',
+        'UDCPR compliance gaps identified after building plan approval — requiring costly revisions',
+        'Self-redevelopment engagements where the consultant lacks government interface experience',
+        'Developer-led agreements where members lack independent professional oversight',
+      ],
+      posture:'Members deserve professional oversight that is accountable from the first structural report to the final occupation certificate. DPACO structures that oversight as the institutional layer between the society\'s investment and every execution risk.',
+    },
+    stages:[
+      { num:'01', title:'Concept',   sub:'Structural Assessment and Redevelopment Feasibility',  body:'DPACO commences every society engagement with a VJTI-empaneled structural assessment of the existing building. Dilapidated building assessment under VJTI empanelment carries institutional credibility for municipal authorities, court proceedings, and member governance obligations. The assessment determines the correct redevelopment pathway — rehabilitation, partial reconstruction, or full redevelopment.' },
+      { num:'02', title:'Structure', sub:'UDCPR Compliance, FSI Calculation, and Legal Framework', body:'DPACO structures the redevelopment model in full UDCPR compliance — floor space index calculations, permissible construction parameters, and the regulatory documentation required for building plan submission. The legal framework — developer agreement structure where applicable, self-redevelopment model where preferred — is mapped against Maharashtra\'s co-operative housing regulations.' },
+      { num:'03', title:'Approval',  sub:'Municipal Approval — Building Plan, Commencement Certificate, Compliance Stages', body:'DPACO manages the full municipal approval pathway: building plan approval, commencement certificate, plinth check, and all intermediate compliance certifications. Active working relationships with Municipal Corporation bodies across Maharashtra\'s key cities reduce friction at each stage. Every approval stage is documented and reported to the committee.' },
+      { num:'04', title:'Execution', sub:'Construction Oversight and Occupation Certificate',    body:'DPACO provides independent professional oversight across the full construction phase — contractor accountability, quality compliance, structural compliance verification, and timeline management. The engagement concludes with the occupation certificate — the document that confirms regulatory compliance and allows members to take possession of their new units.' },
+    ],
+    services:[
+      { title:'VJTI-Empaneled Structural Assessment — Dilapidated Building Certification', body:'DPACO holds empanelment with Veermata Jijabai Technological Institute (VJTI), one of Maharashtra\'s foremost technical institutions. Structural assessments carry institutional credibility required for municipal approval, court proceedings, and member governance obligations.' },
+      { title:'UDCPR Compliance Structuring — FSI, Permissible Parameters, Regulatory Framework', body:'DPACO\'s 45 years of municipal planning experience includes active working knowledge of UDCPR across multiple regulatory cycles. The redevelopment model is structured within UDCPR\'s permissible parameters from the outset.' },
+      { title:'Building Plan and Statutory Approval Management',       body:'DPACO manages the complete municipal approval sequence: building plan approval, commencement certificate, plinth check, completion certificate, and occupation certificate. Every stage is tracked and reported to the committee with documentation.' },
+      { title:'Self-Redevelopment Model Structuring',                  body:'For societies pursuing self-redevelopment, DPACO structures the financial model, contractor procurement framework, project management methodology, and member communication structure. The society receives PMC-grade project management without a developer\'s margin absorption.' },
+      { title:'Developer Agreement Review and Member Protection',      body:'For developer-led redevelopments, DPACO serves as the society\'s independent professional oversight — reviewing developer agreements, verifying construction quality against approved plans, and ensuring the interests of members are represented in the execution documentation.' },
+      { title:'Member Communication Framework — Transparency at Every Stage', body:'DPACO provides monthly committee reports on project status, approval stage, construction progress, and budget compliance. Members receive documentation they can review independently — the kind of transparency that maintains committee credibility throughout a multi-year redevelopment.' },
+    ],
+    projects:[
+      { name:'VJTI Empanelment',          type:'Institutional Structural Assessment Credential',  rows:[['Credential Type','Empanelment — Veermata Jijabai Technological Institute (VJTI), Mumbai'],['Scope','Dilapidated building structural assessment'],['Significance','VJTI is one of Maharashtra\'s foremost government technical institutions. Reports carry institutional credibility before municipal authorities and courts'],['Application','Dilapidated building certification, structural safety reports, redevelopment feasibility assessment']], verify:'VJTI empanelment register · DPACO credential documentation' },
+      { name:'Malabar Hill Housing',      type:'Mumbai Premium Society Reference',                rows:[['Location','Malabar Hill, Mumbai'],['Relevance','DPACO holds active professional relationships with prime societies in Malabar Hill'],['Significance','Society committees in Mumbai\'s most established residential precincts have engaged DPACO']], verify:'DPACO client reference register · Malabar Hill society records on request' },
+      { name:'45 Years Municipal Planning', type:'Maharashtra Urban and APMC Infrastructure',     rows:[['Span','1980 — Present'],['Municipal Bodies','Active working relationships across Municipal Corporations, Nagar Palikas, and Urban Development bodies in Maharashtra'],['UDCPR Experience','Multiple regulatory cycles across Maharashtra\'s urban planning framework'],['Relevance','A society\'s redevelopment project navigates the same municipal approval bodies DPACO has worked with across 45 years']], verify:'DPACO project register · Government empanelment records' },
+    ],
+    cta:{ action:'Explore DPACO\'s Society Redevelopment Oversight Model', note:'Request a preliminary discussion on VJTI-empaneled structural assessment, UDCPR compliance structuring, or self-redevelopment model design for your society.' },
+  },
+};
+
+/* ─── SUB-COMPONENTS ────────────────────────────────────────────────────── */
+
+function Eyebrow({ label, light }) {
+  return (
+    <div className="flex items-center gap-3 mb-5">
+      <div className={`h-px w-10 ${light ? 'bg-earth-400' : 'bg-earth-600'}`} />
+      <span className={`text-[10px] font-bold tracking-[.35em] uppercase ${light ? 'text-earth-400' : 'text-earth-600'}`}>{label}</span>
+    </div>
+  );
+}
+
+function StageBar({ stages }) {
+  const [active, setActive] = useState(0);
+  return (
+    <div>
+      {/* Tab row */}
+      <div className="grid grid-cols-4 gap-2 mb-8">
+        {stages.map((s,i) => (
+          <button key={i} onClick={() => setActive(i)}
+            className={`text-left px-4 py-3 border transition-all duration-150 ${active===i ? 'bg-navy-800 border-navy-800' : 'bg-white border-earth-200 hover:border-navy-700'}`}>
+            <span className={`block text-[10px] font-bold tracking-widest mb-1 ${active===i ? 'text-earth-400' : 'text-earth-600'}`}>{s.num}</span>
+            <span className={`block text-sm font-bold leading-tight ${active===i ? 'text-white' : 'text-navy-800'}`}>{s.title}</span>
+          </button>
+        ))}
+      </div>
+      {/* Detail panel */}
+      <div className="bg-navy-800 p-8 fade-in" key={active}>
+        <p className={`text-earth-400 text-xs font-semibold tracking-widest uppercase mb-3`}>{stages[active].sub}</p>
+        <p className="text-earth-200 text-base leading-relaxed">{stages[active].body}</p>
+      </div>
+    </div>
+  );
+}
+
+function ServiceGrid({ services }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {services.map((s,i) => (
+        <div key={i} className="bg-white border border-earth-200 p-6 service-card hover:border-navy-800 transition-colors duration-150">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-6 h-6 bg-navy-800 flex items-center justify-center shrink-0 mt-0.5">
+              <span className="text-earth-400 text-[10px] font-bold">{String(i+1).padStart(2,'0')}</span>
+            </div>
+            <h4 className="serif text-navy-800 text-base font-semibold leading-snug">{s.title}</h4>
+          </div>
+          <p className="text-earth-700 text-sm leading-relaxed pl-9">{s.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProjectGrid({ projects }) {
+  const [active, setActive] = useState(0);
+  const p = projects[active];
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Selector */}
+      <div className="flex flex-col gap-3">
+        {projects.map((proj,i) => (
+          <button key={i} onClick={() => setActive(i)}
+            className={`text-left p-4 border transition-all duration-150 ${active===i ? 'bg-navy-800 border-navy-800' : 'bg-white border-earth-200 hover:border-navy-700'}`}>
+            <span className={`block serif text-base font-semibold ${active===i ? 'text-white' : 'text-navy-800'}`}>{proj.name}</span>
+            <span className={`block text-[11px] mt-0.5 ${active===i ? 'text-earth-400' : 'text-earth-600'}`}>{proj.type}</span>
+          </button>
+        ))}
+      </div>
+      {/* Detail */}
+      <div className="lg:col-span-2 bg-white border border-earth-200 fade-in" key={active}>
+        <div className="bg-navy-800 px-6 py-3">
+          <span className="text-earth-400 text-[10px] font-bold tracking-widest uppercase">{p.name}</span>
+          <span className="text-earth-300/50 text-[10px] mx-2">·</span>
+          <span className="text-earth-300/60 text-[10px]">{p.type}</span>
+        </div>
+        <table className="w-full proof-row">
+          <tbody>
+            {p.rows.map(([k,v],i) => (
+              <tr key={i} className={i%2===0 ? 'bg-earth-50' : 'bg-white'}>
+                <td className="font-semibold text-navy-800 w-40">{k}</td>
+                <td className="text-earth-700">{v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="px-5 py-4 border-t border-earth-200 flex items-start gap-3">
+          <svg className="w-4 h-4 text-earth-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div>
+            <span className="text-navy-800 font-bold text-[11px] uppercase tracking-wide">Verify with: </span>
+            <span className="text-earth-600 text-[11px]">{p.verify}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── LANDING PAGE BODY ─────────────────────────────────────────────────── */
+
+function LandingPage({ id }) {
+  const d = PAGES[id];
+  return (
+    <div className="fade-in">
+
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section className="bg-navy-800 grid-bg relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-earth-400/5 -translate-y-1/3 translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-navy-900/50" />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+          <Eyebrow label="High-Authority Hero" light />
+          <h1 className="serif text-white text-4xl md:text-6xl font-semibold leading-[1.1] mb-6 max-w-4xl">
+            {d.hero.headline.split('. ').map((part, i, arr) => (
+              <span key={i}>
+                {i === 0 ? part : <><br className="hidden md:block" /><span className="text-earth-400">{part}</span></>}
+                {i < arr.length - 1 ? '. ' : ''}
+              </span>
+            ))}
+          </h1>
+          <p className="text-earth-400 text-base md:text-lg font-medium leading-relaxed max-w-3xl mb-5 italic">{d.hero.sub}</p>
+          <p className="text-earth-300/75 text-sm md:text-base leading-relaxed max-w-2xl">{d.hero.body}</p>
+        </div>
+      </section>
+
+      {/* ── PIVOT ─────────────────────────────────────────────────────────── */}
+      <section className="bg-earth-100 border-b border-earth-200">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <Eyebrow label="Problem Recognition" />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+            <div className="lg:col-span-2">
+              <h2 className="serif text-navy-800 text-2xl md:text-3xl font-semibold leading-snug mb-4">"{d.pivot.hook}"</h2>
+              <p className="text-earth-700 text-sm leading-relaxed">{d.pivot.intro}</p>
+            </div>
+            <div className="lg:col-span-3">
+              <p className="text-earth-600 text-[10px] font-bold tracking-widest uppercase mb-4">Common Failure Points</p>
+              <ul className="space-y-3 mb-8">
+                {d.pivot.points.map((pt,i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-5 h-5 bg-navy-800 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-earth-400 text-[9px] font-bold">{i+1}</span>
+                    </div>
+                    <span className="text-navy-800 text-sm leading-relaxed">{pt}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="bg-navy-800 p-5 border-l-4 border-earth-400">
+                <p className="text-earth-300/60 text-[10px] font-bold tracking-widest uppercase mb-2">The DPACO Posture</p>
+                <p className="text-white text-sm leading-relaxed">{d.pivot.posture}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VALUE MODEL ───────────────────────────────────────────────────── */}
+      <section className="bg-white border-b border-earth-200">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <Eyebrow label="The DPACO Value Model" />
+          <h2 className="serif text-navy-800 text-3xl md:text-4xl font-semibold mb-2">A 4-Stage Journey</h2>
+          <p className="text-earth-600 text-sm mb-10 max-w-xl">Calibrated for your specific mandate — from concept origination to commissioned outcome.</p>
+          <StageBar stages={d.stages} />
+        </div>
+      </section>
+
+      {/* ── SERVICES ──────────────────────────────────────────────────────── */}
+      <section className="bg-earth-100 border-b border-earth-200">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <Eyebrow label="Detailed Scope of Engagement" />
+          <h2 className="serif text-navy-800 text-3xl md:text-4xl font-semibold mb-2">Services DPACO Structures</h2>
+          <p className="text-earth-600 text-sm mb-10 max-w-xl">Every service listed is available from Day One of engagement — backed by 45 years of institutional practice.</p>
+          <ServiceGrid services={d.services} />
+        </div>
+      </section>
+
+      {/* ── PROJECTS ──────────────────────────────────────────────────────── */}
+      <section className="bg-white border-b border-earth-200">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <Eyebrow label="Verifiable Project Records" />
+          <h2 className="serif text-navy-800 text-3xl md:text-4xl font-semibold mb-2">Project Register</h2>
+          <p className="text-earth-600 text-sm mb-10 max-w-xl">Every claim traces to a named project, a government record, or an institutional credential. Select a project to review.</p>
+          <ProjectGrid projects={d.projects} />
+        </div>
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────────────────────────── */}
+      <section className="bg-navy-900">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <div className="max-w-2xl">
+            <Eyebrow label="Authority CTA" light />
+            <h2 className="serif text-white text-2xl md:text-3xl font-semibold mb-3">→ {d.cta.action}</h2>
+            <p className="text-earth-300/70 text-sm leading-relaxed mb-8">{d.cta.note}</p>
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-2 bg-navy-800 border border-earth-400/20 px-4 py-2.5">
+                <span className="text-earth-400 text-xs">✉</span>
+                <span className="text-earth-300/80 text-xs">info@dpaco.in</span>
+              </div>
+              <div className="flex items-center gap-2 bg-navy-800 border border-earth-400/20 px-4 py-2.5">
+                <span className="text-earth-400 text-xs">✆</span>
+                <span className="text-earth-300/80 text-xs">+91 83810 33300</span>
+              </div>
+              <div className="flex items-center gap-2 bg-navy-800 border border-earth-400/20 px-4 py-2.5">
+                <span className="text-earth-400 text-xs">⊞</span>
+                <span className="text-earth-300/80 text-xs">WhatsApp available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}
+
+/* ─── ROOT APP ──────────────────────────────────────────────────────────── */
+
+function App() {
+  const [active, setActive] = useState('bureaucrats');
+  const tabsRef = useRef(null);
+
+  return (
+    <div className="min-h-screen">
+
+      {/* ── GLOBAL NAV ──────────────────────────────────────────────────── */}
+      <nav className="bg-navy-800 border-b border-earth-400/15 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-3.5 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-earth-400 flex items-center justify-center">
+              <span className="text-navy-900 font-bold text-xs tracking-wider">DA</span>
+            </div>
+            <div>
+              <span className="text-white font-bold text-sm tracking-[.18em]">DPACO</span>
+              <span className="hidden sm:block text-earth-300/40 text-[9px] tracking-[.18em] uppercase leading-none mt-0.5">Design Procurement Approvals Corporation</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="hidden md:block text-earth-300/40 text-[10px] tracking-widest uppercase">Segmented Landing Pages</span>
+            <div className="h-4 w-px bg-earth-400/20 hidden md:block" />
+            <span className="text-earth-400/70 text-[10px]">Version 1 · June 2026</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── AUDIENCE SELECTOR ───────────────────────────────────────────── */}
+      <div className="bg-navy-900 border-b border-earth-400/10 sticky top-[57px] z-40">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-1 scrollbar-hide overflow-x-auto" ref={tabsRef}>
+            <span className="text-earth-300/35 text-[10px] tracking-widest uppercase shrink-0 mr-3">Pathway:</span>
+            {AUDIENCES.map(a => (
+              <button key={a.id} onClick={() => setActive(a.id)}
+                className={`shrink-0 px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-150 ${active===a.id ? 'tab-active' : 'tab-passive'}`}>
+                {a.short}
+              </button>
+            ))}
+          </div>
+          <p className="text-earth-300/35 text-[10px] mt-1.5 pl-16">
+            {AUDIENCES.find(a => a.id === active)?.label}
+          </p>
+        </div>
+      </div>
+
+      {/* ── LANDING PAGE BODY ───────────────────────────────────────────── */}
+      <LandingPage id={active} key={active} />
+
+      {/* ── GLOBAL FOOTER ───────────────────────────────────────────────── */}
+      <footer className="bg-navy-950 py-10">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-7 h-7 bg-earth-400 flex items-center justify-center">
+                <span className="text-navy-900 font-bold text-[10px]">DA</span>
+              </div>
+              <span className="text-white font-bold text-sm tracking-widest">DPACO</span>
+            </div>
+            <p className="text-earth-300/30 text-[11px] max-w-xs leading-relaxed">
+              Design Procurement Approvals Corporation<br />
+              Maharashtra's Infrastructure Consultancy Since 1980<br />
+              45+ Years · 9 Depts · 17 APMC Projects · 50+ Empanelments
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-earth-300/25 text-[10px] leading-loose">
+              Copy: Claude for DPACO · June 2026<br />
+              Brand standards: 06-brand-voice-guide.md<br />
+              Zero Negatives Mandate · Decision-Grade Language<br />
+              Status: Version 1 — pending client review
+            </p>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
